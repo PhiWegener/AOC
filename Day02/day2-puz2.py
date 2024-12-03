@@ -1,3 +1,5 @@
+# doesn't work
+
 countSafe = 0
 listOfUnsafes = []
 def checkIfIntListIsSafe(intList):
