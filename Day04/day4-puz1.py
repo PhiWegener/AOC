@@ -45,33 +45,33 @@ directions = {
 }
 counter = 0
 for xCord, line in enumerate(mapStruktur):
-    print(f"# DEBUG: Start searching for \'X\' in Line {xCord} ({line})")
+    # print(f"# DEBUG: Start searching for \'X\' in Line {xCord} ({line})")
     for yCord, letter in enumerate(line):
-        print(f"# DEBUG: Start searching for X at Position {yCord}")
+        # print(f"# DEBUG: Start searching for X at Position {yCord}")
         if letter == "X":
-            print(f"# Debug: Found Letter X at {xCord}, {yCord}")
+            # print(f"# Debug: Found Letter X at {xCord}, {yCord}")
             for direction, value in directions.items():
-                print(f"# DEBUG: Start looking in direction {direction}")
+                # print(f"# DEBUG: Start looking in direction {direction}")
                 if xCord < 3 and "up" in direction.lower():
-                    print("# xCord < 3 and up in direction")
+                    # print("# xCord < 3 and up in direction")
                     continue
                 if xCord > len(mapStruktur) -4 and "down" in direction.lower():
-                    print(f"# xCord > len of mapStruktur -3 => {len(mapStruktur) - 4} and down in direction")
+                    # print(f"# xCord > len of mapStruktur -3 => {len(mapStruktur) - 4} and down in direction")
                     continue
                 if yCord > len(line) -4 and "right" in direction.lower():
-                    print("# yCord > len(line)-3 and right in direction")
+                    # print("# yCord > len(line)-3 and right in direction")
                     continue
                 if yCord < 3 and "left" in direction.lower():
-                    print("# yCord < 3 and left in direction")
+                    # print("# yCord < 3 and left in direction")
                     continue
-                print(xCord + value["dx"], ", ", yCord + value["dy"])
+                # print(xCord + value["dx"], ", ", yCord + value["dy"])
                 if not mapStruktur[xCord + value["dx"]][yCord + value["dy"]] == "M":
                     continue
                 if not mapStruktur[xCord + value["dx"]*2][yCord + value["dy"]*2] == "A":
                     continue
                 if not mapStruktur[xCord + value["dx"]*3][yCord + value["dy"]*3] == "S":
                     continue
-                print(f"# DEBUG: Found Match counter + 1")
+                # print(f"# DEBUG: Found Match counter + 1")
                 counter += 1
 
 print(counter)
