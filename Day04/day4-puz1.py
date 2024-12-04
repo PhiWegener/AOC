@@ -2,8 +2,8 @@ tmp = []
 mapStruktur = []
 
 # Aufbau Map wobei X die senkrechte Koordinate ist und Y die Waagerechte
-#          0    1    2    3    4    5    6    7    8    9 
-
+#       Y  0    1    2    3    4    5    6    7    8    9 
+#  X
 #  0     ['M', 'M', 'M', 'S', 'X', 'X', 'M', 'A', 'S', 'M'], 
 #  1     ['M', 'S', 'A', 'M', 'X', 'M', 'S', 'M', 'S', 'A'], 
 #  2     ['A', 'M', 'X', 'S', 'X', 'M', 'A', 'A', 'M', 'M'], 
