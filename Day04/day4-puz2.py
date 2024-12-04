@@ -33,16 +33,12 @@ for xCord, line in enumerate(mapStruktur):
     for yCord, letter in enumerate(line):
         # print(f"# DEBUG: Start searching for X at Position {yCord}")
         if letter == "A":
-            if xCord < 2 :
+            if xCord-1 < 0 or xCord+1 >= len(mapStruktur)-1:
                 continue
-            if xCord > len(mapStruktur) -3:
+            if yCord-1 < 0 or yCord+1 >= len(line)-1:
                 continue
-            if yCord > len(line) -3:
-                continue
-            if yCord < 2:
-                continue
-
-            print(f"# DEBUG: Found Character A start checking for X-MAS @({xCord}, {yCord})")
+            
+            print(f"# DEBUG: Found Character A start checking for X-MAS ({xCord}, {yCord})")
 
             # 2 Cases Möglich: S oder M links über A
             # Case 1 (M ist links oben):
@@ -56,31 +52,33 @@ for xCord, line in enumerate(mapStruktur):
                     direction = directions["diagLeftDown"]
                     if not mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "S":
                         continue
-                direction = directions["diagRightUp"]
-                if mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "S":
+                elif mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "S":
                     direction = directions["diagLeftDown"]
                     if not mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "M":
                         continue
-                    print(f"# DEBUG: Case 1 Korrekt Counter +1")
-                    counter += 1
+                else:
+                    continue    
+                print(f"# DEBUG: Case 1 Korrekt Counter {counter} + 1")
+                counter += 1
                     
             # Case 2 (S ist links oben):
-            direction = directions["diagLeftUp"]
-            if mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "S":
+            # direction = directions["diagLeftUp"]
+            elif mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "S":
                 direction = directions["diagRightDown"]
                 if not mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "M":
                     continue
-                direction = directions["diagRightUp"]
-                if mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "S":
-                    direction = directions["diagLeftDown"]
-                    if not mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "M":
-                        continue
                 direction = directions["diagRightUp"]
                 if mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "M":
                     direction = directions["diagLeftDown"]
                     if not mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "S":
                         continue
-                    print(f"# DEBUG: Case 2 Korrekt Counter +1")
-                    counter += 1
+                elif mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "S":
+                    direction = directions["diagLeftDown"]
+                    if not mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "M":
+                        continue
+                else:
+                    continue
+                print(f"# DEBUG: Case 2 Korrekt Counter {counter} + 1")
+                counter += 1
 
 print(counter)
