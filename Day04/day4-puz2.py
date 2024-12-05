@@ -29,9 +29,7 @@ directions = {
 }
 counter = 0
 for xCord, line in enumerate(mapStruktur):
-    # print(f"# DEBUG: Start searching for \'X\' in Line {xCord} ({line})")
     for yCord, letter in enumerate(line):
-        # print(f"# DEBUG: Start searching for X at Position {yCord}")
         if letter == "A":
             if xCord-1 < 0 or xCord+1 >= len(mapStruktur)-1:
                 continue
@@ -62,7 +60,6 @@ for xCord, line in enumerate(mapStruktur):
                 counter += 1
                     
             # Case 2 (S ist links oben):
-            # direction = directions["diagLeftUp"]
             elif mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "S":
                 direction = directions["diagRightDown"]
                 if not mapStruktur[xCord + direction["dx"]][yCord + direction["dy"]] == "M":
