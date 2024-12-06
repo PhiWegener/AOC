@@ -1,3 +1,5 @@
+import time
+st = time.process_time()
 tmp = []
 mapStruktur = []
 
@@ -23,10 +25,9 @@ with open("input/input.txt", 'r') as file:
                 tmp.append(letter)
         mapStruktur.append(tmp)
         tmp = []
-# print(mapStruktur)
 
 
-def getStartingPositionAndChar(): #-> tuple(xCoord, yCoord, char):
+def getStartingPositionAndChar():
     # get starting position
     for xCoord in range(len(mapStruktur) -1):
         for yCoord, char in enumerate(mapStruktur[xCoord]):
@@ -65,7 +66,6 @@ def moveDown(currentPosition):
     mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
     try:
         nextPosition = [currentPosition[0]+1, currentPosition[1]]
-        # mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
         if mapStruktur[nextPosition[0]][nextPosition[1]] == "#":
             nextPosition = [currentPosition[0], currentPosition[1]-1]
             mapStruktur[nextPosition[0]][nextPosition[1]] = "<"
@@ -104,12 +104,13 @@ while True:
         char = mapStruktur[currentPosition[0]][currentPosition[1]]
     if char == "X":
         break
-    # for line in mapStruktur:
-    #     print(line)
-    # print("###################")
 
 counter = 0
 for line in mapStruktur:
-    print(line)
+    # print(line)
     counter += line.count("X")
 print (counter)
+
+et = time.process_time()
+pTime = (et-st)*1000
+print(f"Zeit: {pTime}ms")
