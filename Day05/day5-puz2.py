@@ -58,7 +58,7 @@ for updateNumber, update in enumerate(updates):
             # resultList.append(ret[1][int(len(update)/2-0.5)])
             break
     
-print(f"# DEBUG: falseUpdates {falseUpdates}")
+# print(f"# DEBUG: falseUpdates {falseUpdates}")
 test = []
 for update in falseUpdates:
     print(f"# DEBUG: update before sort {update}")
@@ -67,5 +67,5 @@ for update in falseUpdates:
 
 # 51346 => too High
 # len -> 862 Falsche ?
-print(len(resultList))
-print(sum(resultList))
+print(len(falseUpdates))
+# print(sum(resultList))
