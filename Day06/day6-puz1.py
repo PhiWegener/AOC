@@ -112,5 +112,4 @@ for line in mapStruktur:
 print (counter)
 
 et = time.process_time()
-pTime = (et-st)*1000
-print(f"Zeit: {pTime}ms")
+print(f"Zeit: {(et-st)*1000}ms")
