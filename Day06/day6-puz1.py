@@ -88,8 +88,6 @@ def moveLeft(currentPosition):
 xCoordStart, yCoordStart, char = getStartingPositionAndChar()
 currentPosition = [xCoordStart, yCoordStart]
 while True:
-    if not checkCurrentPosition(currentPosition):
-        break
     if char == "^":
         currentPosition = moveUp(currentPosition)
         char = mapStruktur[currentPosition[0]][currentPosition[1]]
