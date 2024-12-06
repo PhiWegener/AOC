@@ -43,24 +43,30 @@ def checkCurrentPosition(currentPosition):
     return True
 
 def moveUp(currentPosition):
-    nextPosition = [currentPosition[0] - 1, currentPosition[1]]
     mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
-    if mapStruktur[nextPosition[0]][nextPosition[1]] == "#":
-        nextPosition = [currentPosition[0], currentPosition[1]+1]
-        mapStruktur[nextPosition[0]][nextPosition[1]] = ">"
-    else: 
-        mapStruktur[nextPosition[0]][nextPosition[1]] = "^"
-    return nextPosition
-
+    try:
+        nextPosition = [currentPosition[0] - 1, currentPosition[1]]
+        if mapStruktur[nextPosition[0]][nextPosition[1]] == "#":
+            nextPosition = [currentPosition[0], currentPosition[1]+1]
+            mapStruktur[nextPosition[0]][nextPosition[1]] = ">"
+        else: 
+            mapStruktur[nextPosition[0]][nextPosition[1]] = "^"
+        return nextPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+    except IndexError:
+        return currentPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+        
 def moveRight(currentPosition):
-    nextPosition = [currentPosition[0], currentPosition[1]+1]
     mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
-    if mapStruktur[nextPosition[0]][nextPosition[1]] == "#":
-        nextPosition = [currentPosition[0]+1, currentPosition[1]]
-        mapStruktur[nextPosition[0]][nextPosition[1]] = "v"
-    else: 
-        mapStruktur[nextPosition[0]][nextPosition[1]] = ">"
-    return nextPosition
+    try:
+        nextPosition = [currentPosition[0], currentPosition[1]+1]
+        if mapStruktur[nextPosition[0]][nextPosition[1]] == "#":
+            nextPosition = [currentPosition[0]+1, currentPosition[1]]
+            mapStruktur[nextPosition[0]][nextPosition[1]] = "v"
+        else: 
+            mapStruktur[nextPosition[0]][nextPosition[1]] = ">"
+        return nextPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+    except IndexError:
+        return currentPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
 
 def moveDown(currentPosition):
     mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
@@ -71,19 +77,23 @@ def moveDown(currentPosition):
             mapStruktur[nextPosition[0]][nextPosition[1]] = "<"
         else: 
             mapStruktur[nextPosition[0]][nextPosition[1]] = "v"
-        return nextPosition
+        return nextPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
     except IndexError:
-        return currentPosition
+        return currentPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
 
 def moveLeft(currentPosition):
-    nextPosition = [currentPosition[0], currentPosition[1]-1]
     mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
-    if mapStruktur[nextPosition[0]][nextPosition[1]] == "#":
-        nextPosition = [currentPosition[0]-1, currentPosition[1]]
-        mapStruktur[nextPosition[0]][nextPosition[1]] = "^"
-    else: 
-        mapStruktur[nextPosition[0]][nextPosition[1]] = "<"
-    return nextPosition
+    try:
+        nextPosition = [currentPosition[0], currentPosition[1]-1]
+        if mapStruktur[nextPosition[0]][nextPosition[1]] == "#":
+            nextPosition = [currentPosition[0]-1, currentPosition[1]]
+            mapStruktur[nextPosition[0]][nextPosition[1]] = "^"
+        else: 
+            mapStruktur[nextPosition[0]][nextPosition[1]] = "<"
+        return nextPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+    except IndexError:
+        return currentPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+
 
 xCoordStart, yCoordStart, char = getStartingPositionAndChar()
 currentPosition = [xCoordStart, yCoordStart]
