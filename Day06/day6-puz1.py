@@ -51,9 +51,9 @@ def moveUp(currentPosition):
             mapStruktur[nextPosition[0]][nextPosition[1]] = ">"
         else: 
             mapStruktur[nextPosition[0]][nextPosition[1]] = "^"
-        return nextPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+        return nextPosition
     except IndexError:
-        return currentPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+        return currentPosition
         
 def moveRight(currentPosition):
     mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
@@ -64,9 +64,9 @@ def moveRight(currentPosition):
             mapStruktur[nextPosition[0]][nextPosition[1]] = "v"
         else: 
             mapStruktur[nextPosition[0]][nextPosition[1]] = ">"
-        return nextPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+        return nextPosition
     except IndexError:
-        return currentPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+        return currentPosition
 
 def moveDown(currentPosition):
     mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
@@ -77,9 +77,9 @@ def moveDown(currentPosition):
             mapStruktur[nextPosition[0]][nextPosition[1]] = "<"
         else: 
             mapStruktur[nextPosition[0]][nextPosition[1]] = "v"
-        return nextPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+        return nextPosition
     except IndexError:
-        return currentPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+        return currentPosition
 
 def moveLeft(currentPosition):
     mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
@@ -90,9 +90,9 @@ def moveLeft(currentPosition):
             mapStruktur[nextPosition[0]][nextPosition[1]] = "^"
         else: 
             mapStruktur[nextPosition[0]][nextPosition[1]] = "<"
-        return nextPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+        return nextPosition
     except IndexError:
-        return currentPosition, mapStruktur[nextPosition[0]][nextPosition[1]]
+        return currentPosition
 
 
 xCoordStart, yCoordStart, char = getStartingPositionAndChar()
