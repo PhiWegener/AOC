@@ -33,7 +33,7 @@ def getStartingPositionAndChar():
     # get starting position
     for xCoord in range(len(mapStruktur) -1):
         for yCoord, char in enumerate(mapStruktur[xCoord]):
-            if char == "." or char == "#":
+            if char == "." or char == "#" or char == "O":
                 continue
             return xCoord, yCoord, char
 
@@ -48,9 +48,13 @@ def moveUp(currentPosition):
     mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
     try:
         nextPosition = [currentPosition[0] - 1, currentPosition[1]]
-        if mapStruktur[nextPosition[0]][nextPosition[1]] == "#":
-            nextPosition = [currentPosition[0], currentPosition[1]+1]
-            mapStruktur[nextPosition[0]][nextPosition[1]] = ">"
+        if mapStruktur[nextPosition[0]][nextPosition[1]] == "#" or mapStruktur[nextPosition[0]][nextPosition[1]] == "O":
+            if mapStruktur[currentPosition[0]][currentPosition[1]+1] == "O":
+                nextPosition = [currentPosition[0]+1, currentPosition[1]]
+                mapStruktur[nextPosition[0]][nextPosition[1]] = "v"
+            else:
+                nextPosition = [currentPosition[0], currentPosition[1]+1]
+                mapStruktur[nextPosition[0]][nextPosition[1]] = ">"
         else: 
             mapStruktur[nextPosition[0]][nextPosition[1]] = "^"
         return nextPosition
@@ -61,9 +65,13 @@ def moveRight(currentPosition):
     mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
     try:
         nextPosition = [currentPosition[0], currentPosition[1]+1]
-        if mapStruktur[nextPosition[0]][nextPosition[1]] == "#":
-            nextPosition = [currentPosition[0]+1, currentPosition[1]]
-            mapStruktur[nextPosition[0]][nextPosition[1]] = "v"
+        if mapStruktur[nextPosition[0]][nextPosition[1]] == "#" or mapStruktur[nextPosition[0]][nextPosition[1]] == "O":
+            if mapStruktur[currentPosition[0]+1][currentPosition[1]] == "O":
+                nextPosition = [currentPosition[0], currentPosition[1]-1]
+                mapStruktur[nextPosition[0]][nextPosition[1]] = "<"
+            else:
+                nextPosition = [currentPosition[0]+1, currentPosition[1]]
+                mapStruktur[nextPosition[0]][nextPosition[1]] = "v"
         else: 
             mapStruktur[nextPosition[0]][nextPosition[1]] = ">"
         return nextPosition
@@ -71,12 +79,16 @@ def moveRight(currentPosition):
         return currentPosition
 
 def moveDown(currentPosition):
-    mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
+    mapStruktur[currentPosition[0]][currentPosition[1]] = "X" 
     try:
         nextPosition = [currentPosition[0]+1, currentPosition[1]]
-        if mapStruktur[nextPosition[0]][nextPosition[1]] == "#":
-            nextPosition = [currentPosition[0], currentPosition[1]-1]
-            mapStruktur[nextPosition[0]][nextPosition[1]] = "<"
+        if mapStruktur[nextPosition[0]][nextPosition[1]] == "#" or mapStruktur[nextPosition[0]][nextPosition[1]] == "O":
+            if mapStruktur[currentPosition[0]][currentPosition[1]-1] == "O":
+                nextPosition = [currentPosition[0]-1, currentPosition[1]]
+                mapStruktur[nextPosition[0]][nextPosition[1]] = "^"
+            else:
+                nextPosition = [currentPosition[0], currentPosition[1]-1]
+                mapStruktur[nextPosition[0]][nextPosition[1]] = "<"
         else: 
             mapStruktur[nextPosition[0]][nextPosition[1]] = "v"
         return nextPosition
@@ -87,9 +99,13 @@ def moveLeft(currentPosition):
     mapStruktur[currentPosition[0]][currentPosition[1]] = "X"
     try:
         nextPosition = [currentPosition[0], currentPosition[1]-1]
-        if mapStruktur[nextPosition[0]][nextPosition[1]] == "#":
-            nextPosition = [currentPosition[0]-1, currentPosition[1]]
-            mapStruktur[nextPosition[0]][nextPosition[1]] = "^"
+        if mapStruktur[nextPosition[0]][nextPosition[1]] == "#" or mapStruktur[nextPosition[0]][nextPosition[1]] == "O":
+            if mapStruktur[currentPosition[0]-1][currentPosition[1]] == "O":
+                nextPosition = [currentPosition[0], currentPosition[1]+1]
+                mapStruktur[nextPosition[0]][nextPosition[1]] = "v"
+            else:
+                nextPosition = [currentPosition[0]-1, currentPosition[1]]
+                mapStruktur[nextPosition[0]][nextPosition[1]] = "^"
         else: 
             mapStruktur[nextPosition[0]][nextPosition[1]] = "<"
         return nextPosition
@@ -100,9 +116,12 @@ def checkWay():
     xCoordStart, yCoordStart, char = getStartingPositionAndChar()
     currentPosition = [xCoordStart, yCoordStart]
     cl = False
+    # cnt = 0
     way = []
     first = []
     while True:
+        if "timer" in globals() and time.time() > timer + 120:
+            return True
         if not checkCurrentPosition(currentPosition):
             break
         if cl:
@@ -126,16 +145,29 @@ def checkWay():
                 cl = False
                 match char:
                     case "^":
+                        way.pop(way.index(currentPosition))
+                        # cnt += 1
+                        way.append(currentPosition)
                         currentPosition = moveUp(currentPosition)
-                        
+                        char = mapStruktur[currentPosition[0]][currentPosition[1]]
                     case "<":
+                        way.pop(way.index(currentPosition))
+                        # cnt += 1
+                        way.append(currentPosition)
                         currentPosition = moveLeft(currentPosition)
-                        
+                        char = mapStruktur[currentPosition[0]][currentPosition[1]]
                     case ">":
+                        way.pop(way.index(currentPosition))
+                        # cnt += 1
+                        way.append(currentPosition)
                         currentPosition = moveRight(currentPosition)
-                        
+                        char = mapStruktur[currentPosition[0]][currentPosition[1]]
                     case "v":
+                        way.pop(way.index(currentPosition))
+                        # cnt += 1
+                        way.append(currentPosition)
                         currentPosition = moveDown(currentPosition)
+                        char = mapStruktur[currentPosition[0]][currentPosition[1]]
                 continue
 
         if currentPosition in way:
@@ -173,14 +205,16 @@ for xPos, line in enumerate(mapStruktur):
 
 # print(possiblePos)
 counter = 0
+timer = 0
 mapStruktur = copy.deepcopy(mapClean)
 for i, pos in enumerate(possiblePos):
     start = getStartingPositionAndChar()
     if set(pos) == set((start[0], start[1])):
         continue
-    mapStruktur[pos[0]][pos[1]] = "#"
-    if not checkWay():
-        print(f"# DEBUG: Found 1 possible Loop in {i+1}/{len(possiblePos)}")
+    mapStruktur[pos[0]][pos[1]] = "O"
+    timer = time.time()
+    if checkWay():
+        # print(f"# DEBUG: Found possible Loop in {i+1}/{len(possiblePos)} placed trash @ {pos[0]}, {pos[1]}")
         counter += 1
     mapStruktur = copy.deepcopy(mapClean)
 
