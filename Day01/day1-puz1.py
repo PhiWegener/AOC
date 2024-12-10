@@ -1,3 +1,6 @@
+import time
+st = time.process_time()
+
 list1 = []
 list2 = []
 resultList = []
@@ -15,3 +18,7 @@ with open("input/input.txt", "r") as i:
             resultList.append(diff)
 
     print(sum(resultList))
+
+
+et = time.process_time()
+print(f"\nZeit: {(et-st)*1000}ms")

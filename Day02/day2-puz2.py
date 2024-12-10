@@ -1,3 +1,6 @@
+import time
+st = time.process_time()
+
 # doesn't work
 
 countSafe = 0
@@ -47,3 +50,6 @@ with open("input/input.txt", "r") as i:
             listOfUnsafes.append(intList)
 
 print(countSafe)
+
+et = time.process_time()
+print(f"\nZeit: {(et-st)*1000}ms")

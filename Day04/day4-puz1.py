@@ -1,3 +1,6 @@
+import time
+st = time.process_time()
+
 tmp = []
 mapStruktur = []
 
@@ -91,3 +94,7 @@ for xCord, line in enumerate(mapStruktur):
                 counter += 1
 
 print(counter)
+
+
+et = time.process_time()
+print(f"\nZeit: {(et-st)*1000}ms")

@@ -1,3 +1,6 @@
+import time
+st = time.process_time()
+
 list1 = []
 list2 = []
 with open("input/input.txt", "r") as i:
@@ -9,3 +12,7 @@ with open("input/input.txt", "r") as i:
         simScore += number* list2.count(number)
 
     print(simScore)
+
+
+et = time.process_time()
+print(f"\nZeit: {(et-st)*1000}ms")

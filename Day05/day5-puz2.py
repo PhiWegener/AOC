@@ -1,3 +1,6 @@
+import time
+st = time.process_time()
+
 part1Toggle = True
 por = []
 updates = []
@@ -69,3 +72,6 @@ for update in falseUpdates:
 # len -> 862 Falsche ?
 print(len(falseUpdates))
 # print(sum(resultList))
+
+et = time.process_time()
+print(f"\nZeit: {(et-st)*1000}ms")

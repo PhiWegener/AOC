@@ -1,3 +1,6 @@
+import time
+st = time.process_time()
+
 part1Toggle = True
 por = []
 updates = []
@@ -45,3 +48,6 @@ for updateNumber, update in enumerate(updates):
 # counter -> 1241 Falsche
 print(counter)
 print(sum(resultList))
+
+et = time.process_time()
+print(f"\nZeit: {(et-st)*1000}ms")

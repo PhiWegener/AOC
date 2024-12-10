@@ -66,3 +66,6 @@ for startPoint, count in result.items():
     print(f"Startpunkt {startPoint}: {count} vollständige Pfade")
     counter += count
 print(f"# ERGEBNIS: {counter}")
+
+et = time.process_time()
+print(f"\nZeit: {(et-st)*1000}ms")

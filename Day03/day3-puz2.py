@@ -1,3 +1,6 @@
+import time
+st = time.process_time()
+
 import re
 searchRegex = "mul\(\d{1,3},\d{1,3}\)|do\(\)|don't\(\)"
 listOfMultiplies = []
@@ -27,3 +30,6 @@ for i in listOfMultiplies:
     else:
         continue
 print(sum(listTmp))
+
+et = time.process_time()
+print(f"\nZeit: {(et-st)*1000}ms")
