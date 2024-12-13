@@ -34,40 +34,57 @@ def checkborder(xCoord, yCoord):
         return False
     return True
 
+directions = {
+    "up": {
+        "dx": -1, 
+        "dy": 0
+    }, 
+    "down": {
+        "dx": 1,
+        "dy": 0
+    }, 
+    "left": {
+        "dx": 0,
+        "dy": -1
+    }, 
+    "right": {
+        "dx": 0,
+        "dy": 1
+    }
+}
+
+
 def checkEndOfField(flowerType, xCoord, yCoord):
     """Returns True if the current Field is the end of the flowerfield!"""
-    if xCoord + 1 >= len(matrix) and yCoord + 1 >= len(matrix[0]):
-        return True
-    if xCoord + 1 >= len(matrix) and yCoord < len(matrix[0]) and matrix[xCoord][yCoord+1] != flowerType:
-        return True
-    if xCoord < len(matrix) and yCoord + 1 >= len(matrix[0]) and matrix[xCoord+1][yCoord] != flowerType:
-        return True
-    if xCoord + 1 >= len(matrix) and yCoord + 1 >= len(matrix[0]) and matrix[xCoord+1][yCoord] != flowerType and matrix[xCoord][yCoord+1] != flowerType:
-        return True
-    return False
-
-
+    cnt = 0
+    for key, direction in directions.items():
+        match key:
+            case "up":
+                if xCoord + direction["dx"] < 0:
+                    cnt += 1
+                elif matrix[xCoord + direction["dx"]][yCoord + direction["dy"]] != flowerType:
+                    cnt += 1
+            case "down":
+                if xCoord + direction["dx"] >= len(matrix):
+                    cnt += 1
+                elif matrix[xCoord + direction["dx"]][yCoord + direction["dy"]] != flowerType:
+                    cnt += 1
+            case "left":
+                if yCoord + direction["dy"] < 0:
+                    cnt += 1
+                elif matrix[xCoord + direction["dx"]][yCoord + direction["dy"]] != flowerType:
+                    cnt += 1
+            case "right":
+                if yCoord + direction["dy"] >= len(matrix[0]):
+                    cnt += 1
+                elif matrix[xCoord + direction["dx"]][yCoord + direction["dy"]] != flowerType:
+                    cnt += 1
+        if cnt >= 3:
+            return True
+        return False
 
 # direction oder: up -> down -> left -> right
 def findField(flowerType):
-    directions = {
-        "up": {
-            "dx": -1, 
-            "dy": 0
-        }, 
-        "down": {
-            "dx": 1,
-            "dy": 0
-        }, 
-        "left": {
-            "dx": 0,
-            "dy": -1
-        }, 
-        "right": {
-            "dx": 0,
-            "dy": 1
-        }
-    }
     borderCnt = 0
     area = 0
     price = 0
