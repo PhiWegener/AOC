@@ -24,15 +24,6 @@ with open("input/input.txt", 'r') as file:
         matrix.append(tmp)
         tmp = []
 
-def checkborder(xCoord, yCoord):
-    """
-    returns True if xCoord and yCoord are both inside Mapborders
-    """
-    if not (0 <= xCoord < len(matrix)):
-        return False
-    if not (0 <= yCoord < len(matrix[0])):
-        return False
-    return True
 
 directions = {
     "up": {
@@ -54,57 +45,7 @@ directions = {
 }
 
 
-def checkEndOfField(flowerType, xCoord, yCoord):
-    """Returns True if the current Field is the end of the flowerfield!"""
-    cnt = 0
-    for key, direction in directions.items():
-        match key:
-            case "up":
-                if xCoord + direction["dx"] < 0:
-                    cnt += 1
-                elif matrix[xCoord + direction["dx"]][yCoord + direction["dy"]] != flowerType:
-                    cnt += 1
-            case "down":
-                if xCoord + direction["dx"] >= len(matrix):
-                    cnt += 1
-                elif matrix[xCoord + direction["dx"]][yCoord + direction["dy"]] != flowerType:
-                    cnt += 1
-            case "left":
-                if yCoord + direction["dy"] < 0:
-                    cnt += 1
-                elif matrix[xCoord + direction["dx"]][yCoord + direction["dy"]] != flowerType:
-                    cnt += 1
-            case "right":
-                if yCoord + direction["dy"] >= len(matrix[0]):
-                    cnt += 1
-                elif matrix[xCoord + direction["dx"]][yCoord + direction["dy"]] != flowerType:
-                    cnt += 1
-        if cnt >= 3:
-            return True
-        return False
-
 # direction oder: up -> down -> left -> right
-def findField(flowerType):
-    borderCnt = 0
-    area = 0
-    price = 0
-    for xCoord, line in enumerate(matrix):
-        for yCoord, flower in enumerate(line):
-            current = (xCoord, yCoord)
-            if matrix[current[0]][current[1]] != flowerType:
-                continue
-            for direction in directions.values():
-                if not checkborder(current[0] + direction["dx"], current[1] + direction["dy"]): 
-                    borderCnt += 1
-                    continue
-                if matrix[current[0]+direction["dx"]][current[1]+direction["dy"]] != flowerType:
-                    borderCnt += 1
-            area += 1
-            if checkEndOfField(flowerType, xCoord, yCoord):
-                price += borderCnt * area
-                print(f"# DEBUG: End of Field {flowerType}: ({borderCnt}, {area}) = {price}")
-    return price
-
 
 
 listOfFlowerTypes = []
@@ -112,11 +53,45 @@ for line in matrix:
     for flower in line:
         if not flower in listOfFlowerTypes: listOfFlowerTypes.append(flower)
 
-cnt = 0
+def findFields(plantType):
+    rows = len(matrix)
+    cols = len(matrix[0])
+    visited = set()
+    startPoints = []
+    area = 0
+    bordercnt = 0
+    
+    def checkNeighbour(x, y, plantCurPos, plantType):
+        # Anmerkung an mich: Schau dir Tag 10 an und orientier dich daran
+        # Ich will von jedem R aus schauen, ob ich einen Weg aus dem aktuellen Pflanzentyp zum Startpunkt finde!
+        # Wenn ja, dann füge ihn in Visited hinzu; Area +1; schau in alle Richtungen wegen Zaun (Zaun counter +1 pro nicht gleicher Buchstabe oder outOfIndex)
+        # wenn Nein, dann neuer Startpunkt fürs nächste Feld und mit nächstem Buchstaben weiter
+        # Logik bauen um die anderen startpunkte zu machen
+        if not (0 <= x < rows and 0 <= y < cols):
+            return False
+        if matrix[x][y] != plantCurPos:
+            return False
+        if plantCurPos == plantType:
+            visited.add((x, y))
+
+        for direction in directions: 
+            nextPos = (currentPos[0]+direction["dx"], currentPos[1]+direction["dy"])
+            if not 0 <= nextPos[0] < rowLen:
+                bordercnt += 1
+            if not 0 <= nextPos[1] < colLen:
+                bordercnt += 1
+
+    for xCoord, line in enumerate(matrix):
+        for yCoord, plant in enumerate(line):
+            currentPos = (xCoord, yCoord)
+            if currentPos == plantType:
+                area += 1
+                checkNeighbours(currentPos)
+
 for flower in listOfFlowerTypes:
     print(f"# DEBUG: Start with flowertype: {flower}")
-    cnt += findField(flower)
-print(cnt)
+
+result = findFields("I")
 
 
 et = time.process_time()
