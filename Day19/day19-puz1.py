@@ -17,8 +17,8 @@ with open("input/input.txt", 'r') as file:
 patterns = sorted(patterns, key=len, reverse=True)
 for i in range(len(patterns)):
     patterns[i] = patterns[i].strip().replace("\n", "")
-    if "g" in patterns[i] or len(patterns[i]) == 1:
-        patterns.append(patterns[i])
+    # if "g" in patterns[i] or len(patterns[i]) == 1:
+    #     patterns.append(patterns[i])
 
 search = r"("
 for i, pattern in enumerate(patterns):
@@ -27,10 +27,11 @@ for i, pattern in enumerate(patterns):
         continue
     search += pattern + "|"
 
-search = re.compile(search)
+# search = re.compile(search)
 counter = 0
 for design in designs:
-    if search.fullmatch(design):
+    print(f"search: {search}")
+    if re.fullmatch(search, design):
         counter += 1   
 
 # 328 falsches Ergebnis  
