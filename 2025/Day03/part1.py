@@ -29,11 +29,10 @@ def getJoltList(inStr):
     
 for bank in inputList:
     jolts = getJoltList(bank)
-    print(jolts)
+    # print(jolts)
     firstDigit = jolts[0]
     secondDigit = jolts[1]
     tmp = 0
-    highestComb = 0
     for index, jolt in enumerate(jolts):
         if jolt > firstDigit and index < len(jolts)-1:
             firstDigit = jolt
