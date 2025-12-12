@@ -17,7 +17,7 @@ with open(inputFile, "r") as i:
         inputList.append(line.strip())
 
 def removeRolls(removable):
-    for x, y in removable:              # (x,y) so wie du es speicherst
+    for x, y in removable:
         row = list(inputList[y])
         row[x] = "x"
         inputList[y] = "".join(row)
