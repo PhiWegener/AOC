@@ -1,39 +1,71 @@
 import time
+import re
 st = time.process_time()
 
 devMode = False
-# devMode = True
+devMode = True
 
 if devMode:
     inputFile = "example.txt"
+    length = 4
 else:
     inputFile = "input.txt"
+    length = 5
 
-ranges = []
 result = 0
 
+mathProblems = []
+
 with open(inputFile, "r") as i:
-    for line in i:
-        if line == "\n":
+    for index, line in enumerate(i):
+        # print(line)
+        line = line.rstrip("\n")
+        j = 0
+        while j < len(line):
+            chunk = line[j:j+length-1]
+            if index == 0:
+                mathProblems.append([chunk])
+                j += length
+                continue
+            mathProblems[j//length].append(chunk)
+            j += length
+
+
+for mathProblem in mathProblems:
+    for x, row in enumerate(mathProblem):
+        if x > 0:
+            break
+        math = mathProblem[-1].strip()
+        tmp = []
+        i = 0
+        while i < len(mathProblem)-1:
+            j = 0
+            tmpVar = ""
+            while j < len(mathProblem[i]):
+                if mathProblem[x+j][i] == " ":
+                    j += 1
+                    continue
+                tmpVar = tmpVar + mathProblem[x+j][i]
+                j += 1
+                continue
+            if tmpVar != "":
+                tmp.append(tmpVar)
+            i += 1
             continue
-        if "-" in line:
-            start, end = line.split("-")
-            ranges.append((int(start), int(end)))
-            continue            
 
-ranges = sorted(ranges)
-merged = [ranges[0]]
+        
+        if math == "*":
+            intRes = 1
+            for e in tmp:
+                intRes = intRes * int(e)
+        if math == "+":
+            intRes = 0
+            for e in tmp:
+                intRes = intRes + int(e)
+        # print(intRes)
+        result += intRes
 
-for start, end in ranges[1:]:
-    lastStart, lastEnd = merged[-1]
-    if start <= lastEnd:
-        merged[-1] = (lastStart, max(lastEnd, end))
-    else:
-        merged.append((start, end))
-
-for start, end in merged:
-    result += end - start + 1
-
+# too high: 14238091348462
 print(result)
 
 et = time.process_time()
