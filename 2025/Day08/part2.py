@@ -1,4 +1,6 @@
 import time
+import heapq
+from itertools import combinations
 st = time.process_time()
 
 devMode = False
@@ -13,58 +15,57 @@ inputList = []
 
 with open(inputFile, "r") as i:
     for line in i:
-        inputList.append(line.rstrip("\n"))
+        coords = tuple(map(int, line.rstrip("\n").split(",")))
+        inputList.append(coords)
 
-currentWayPoints = []
-positionOfNoHitSplitters = []
-for x, line in enumerate(inputList):
-    for y, space in enumerate(line):
-        if x == 0:
-            if space == "S":
-                currentWayPoints.append([x+1, y])
-        if x%2 > 0:
+def getFirstElement(tuple):
+    return tuple[0]
+
+def calcDistance(p1, p2):
+    # entfernung=wurzel[ (x2-x1)²+(y2-y1)²+(z2-z1)² ]
+    # wurzel kann weggelassen werden (ist ja relativ)
+    dx = p2[0] - p1[0]
+    dy = p2[1] - p1[1]
+    dz = p2[2] - p1[2]
+    return(dx*dx + dy*dy + dz*dz)
+
+def find(x, parent):
+    if parent[x] != x:
+        parent[x] = find(parent[x], parent)
+    return parent[x]
+
+def union(a, b, parent):
+    ra = find(a, parent)
+    rb = find(b, parent)
+
+    if ra == rb:
+        return False
+    
+    parent[rb] = ra
+    return True
+
+heap: list[(int, int, int)] = []
+n = len(inputList)
+
+for a, b in combinations(range(n), 2):
+    distance = calcDistance(inputList[a], inputList[b])
+    item = (-distance, a, b)
+    heapq.heappush(heap, item)
+    
+heap.sort(key=getFirstElement)
+
+parent = list(x for x in range(len(inputList)))
+components = n
+lastEdge = None
+for negDist, a, b in reversed(heap):
+    if union(a, b, parent):
+        components -= 1
+        lastEdge = (a, b)
+        if components == 1:
             break
-        if space == "^":
-            currentPosition = [x, y]
-            if [x-1, y] in currentWayPoints:
-                currentWayPoints.remove([x-1, y])
-                if y-1 >= 0 and [x+1, y-1] not in currentWayPoints:
-                    currentWayPoints.append([x+1, y-1])
-                if y+1 < len(line) and [x+1, y+1] not in currentWayPoints: 
-                    currentWayPoints.append([x+1, y+1])
-            else:
-                positionOfNoHitSplitters.append([x, y])
-        elif [x-1, y] in currentWayPoints:
-            currentWayPoints.remove([x-1, y])
-            currentWayPoints.append([x+1, y])
-            
-for noHitSplitter in positionOfNoHitSplitters:
-    tmp = []
-    for index, letter in enumerate(inputList[noHitSplitter[0]]):
-        if index != noHitSplitter[1]:
-            tmp.append(letter)
-        else: 
-            tmp.append(".")
-    string = ''.join(tmp)
-    inputList[noHitSplitter[0]] = string
 
-amountOfPaths = []
-for x, line in enumerate(inputList):
-    for y, space in enumerate(line):
-        if x == 0:
-            if space == "S":
-                amountOfPaths.append(1)  
-            else:
-                amountOfPaths.append(0)
-        if x%2 > 0:
-            break
-        if space == "^":
-            amountOfPaths[y-1] = amountOfPaths[y-1] + amountOfPaths[y]
-            amountOfPaths[y+1] = amountOfPaths[y+1] + amountOfPaths[y]
-            amountOfPaths[y] = 0
-
-# too low: 1445
-print(sum(amountOfPaths))
+# print(parent)
+print(inputList[lastEdge[0]][0] * inputList[lastEdge[1]][0])
 
 et = time.process_time()
 print(f"\nZeit: {(et-st)*1000}ms")
